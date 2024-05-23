@@ -1,6 +1,12 @@
 import style from './filter.module.css';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '../../redux/filter/slice';
 
-const Filter = ({ handleFiter }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+  const handleFiter = ({ target: { value } }) => {
+    dispatch(setFilter(value));
+  };
   return (
     <div className={style.wrap_field}>
       <label htmlFor="filter" className={style.title}>

@@ -1,11 +1,32 @@
+import { useDispatch, useSelector } from 'react-redux';
 import style from './form.module.css';
+import { addContactAction } from '../../redux/contacts/slice';
 
-const Form = ({ handleChange }) => {
+const Form = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.contacts);
+
   const handleSubmit = e => {
     e.preventDefault();
     handleChange(e.target.elements.name.value, e.target.elements.number.value);
     e.target.reset();
   };
+
+  const handleChange = (value, number) => {
+    const dublicate = filterByName(value);
+    if (dublicate.length > 0) {
+      alert(`${value} is already in contacts`);
+    } else {
+      dispatch(addContactAction(value, number));
+    }
+  };
+
+  const filterByName = value => {
+    return contacts.filter(
+      item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
+  };
+
   return (
     <form className={style.form} onSubmit={handleSubmit}>
       <div className={style.wrap_field}>
